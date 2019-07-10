@@ -20,6 +20,8 @@ class users {
     $ishepard = hiera('ishepard')
     $hectheo = hiera('hectheo')
     $dritsakon = hiera('dritsakon')
+    $mlazana = hiera('mlazana')
+    $ionpetro = hiera('ionpetro')
     user {'tushar':
         ensure      => present,
         home        => '/home/tushar',
@@ -171,6 +173,20 @@ class users {
         ensure      => present,
         home        => '/home/dritsakon',
         password    => $dritsakon,
+        shell       => '/bin/bash',
+        managehome  => true,
+    }
+    user {'mlazana':
+        ensure      => present,
+        home        => '/home/mlazana',
+        password    => $mlazana,
+        shell       => '/bin/bash',
+        managehome  => true,
+    }
+    user {'ionpetro':
+        ensure      => present,
+        home        => '/home/ionpetro',
+        password    => $ionpetro,
         shell       => '/bin/bash',
         managehome  => true,
     }
