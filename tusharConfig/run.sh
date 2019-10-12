@@ -1,8 +1,11 @@
 #!/bin/bash
 
+# Setup puppet to pull its files from the following directory
+FILEDIR=/etc/puppet
+#FILEDIR=/usr/share/puppet
 
 # Required modules
-MODULES='puppetlabs-stdlib puppetlabs-mysql'
+MODULES='puppetlabs-apt puppet-nodejs initforthe-build_essential'
 
 if ! [ -w / ]
 then
@@ -65,14 +68,34 @@ then
 	usage
 fi
 
+# Comment out the following 5 source code lines if the setting is
+# in GRNET's synnefo.
+# Also discard the README notes and place this script in a cron job
+# run at boot time.
+# This process matches synnefo's image creator. Because the complete software
+# setting will already be in an available OS image, we only need to make Codebox
+# run once a newly created VM runs.
+
+# Setup puppet to work from the current directory
+rm -rf $FILEDIR/manifests
+rm -rf $FILEDIR/modules
+
+mkdir -p $FILEDIR
+ln -s `pwd`/manifests $FILEDIR/manifests
+ln -s `pwd`/modules $FILEDIR/modules
+
+# Update packages before running
+# yum $YES update
+
 # Ensure required Puppet modules are installed
 for m in $MODULES
 do
 	name=$(expr "$m" : '.*-\(.*\)')
-	if ! [ -d /etc/puppet/code/modules/$name/ ]
+	if ! [ -d /etc/puppet/modules/$name/ ]
 	then
+		mkdir -p /etc/puppet/modules
 		puppet module install $m
 	fi
 done
 
-puppet apply --modulepath=$(pwd)/modules:/etc/puppet/code/modules:/etc/puppetlabs/code/environments/production/modules $PUPPETOPT manifests
+puppet apply --modulepath=/home/tushar/stereoConfig/modules/ $PUPPETOPT $FILEDIR/manifests/

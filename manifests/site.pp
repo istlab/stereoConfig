@@ -1,91 +1,23 @@
-node default {
-  include ::mail
-  include ::xserver
-  include ::x11
-  include ::samba
-  include ::ruby
-  include ::r
-  include ::drivers
-  include ::postgresql
-  include ::php
-  include ::perl
-  include ::java
-  include ::xml
-  include ::python
-  include ::nunit
-  include ::mono
-  include ::libfreerdp
-  include ::libboost
-  include ::libakonadi
-  include ::lib32
-  include ::krb5
-  include ::kde
-  include ::iscdhcp
-  include ::iproute
-  include ::init
-  include ::icedtea
-  include ::imagemagick
-  include ::gvfs
-  include ::gstreamer
-  include ::groff
-  # include ::users #Commented out just to avoid resetting passwords of existing users
-  include ::homedir
-  include ::acl  
-  include ::acpi
-  include ::adduser
-  include ::adwaitaicontheme
-  include ::akonadibackendmysql  
-  include ::analog
-  include ::ant
-  include ::apache
-  include ::aptpkg
-  include ::aspell
-  include ::at
-  include ::attrr
-  include ::autoconf
-  include ::automake
-  include ::autopoint
-  include ::autotoolsdev
-  include ::avahidaemon
-  include ::base
-  include ::bash
-  include ::bin
-  include ::bsd
-  include ::bzip2
-  include ::cacertificates
-  include ::colord
-  include ::console
-  include ::cpp
-  include ::cups
-  include ::dbus
-  include ::dconf
-  include ::debconf
-  include ::debian
-  include ::discover
-  include ::dm
-  include ::doc
-  include ::dovecot
-  include ::dpkg
-  include ::e2fs
-  include ::erlang
-  include ::exim4
-  include ::font
-  include ::foomatic
-  include ::gpp
-  include ::gcc
-  include ::gconf
-  include ::gdb
-  include ::gettext
-  include ::gfortran
-  include ::gir
-  include ::git
-  include ::glib
-  include ::gnupg
-  include ::perfmon
-  include ::services
-  include ::grub
-  include ::mysql
 
-  include ::allotherpkgs
-  include ::swap
+# Set global defaults
+Exec {
+  path => "/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin/:/bin:/sbin",
+  logoutput => on_failure
+}
+
+File {
+  mode  => '0644',
+  owner => 'root',
+  group => 'root',
+}
+
+# Downloads area for packages we compile from source
+$downloads = "/usr/local/src/downloads"
+
+file { $downloads :
+  ensure => directory
+}
+
+User {
+  managehome => true,
 }
